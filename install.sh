@@ -3,7 +3,9 @@
 set -e
 [ -n "$DEBUG" ] && set -x
 cd "$(dirname "$0")"
+
 source "lib/homebrew.sh"
+source "lib/ruby.sh"
 
 ensure_brew
 
@@ -31,3 +33,5 @@ ensure_package gnu-getopt --link
 ensure_package postgresql --service
 ensure_package memcached --service
 ensure_package redis --service
+
+ensure_ruby "2.1.0"
