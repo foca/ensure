@@ -13,7 +13,7 @@ ensure_package ack
 ensure_package bash
 ensure_package bash-completion
 ensure_package chruby
-ensure_package ruby-build
+ensure_package ruby-install
 ensure_package cloc
 ensure_package tree
 ensure_package unrar
