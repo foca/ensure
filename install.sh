@@ -17,12 +17,16 @@ ensure_package ruby-install
 ensure_package cloc
 ensure_package tree
 ensure_package unrar
-ensure_package wget
+ensure_package ctags
+ensure_package wget -- --default-names
+ensure_package grep -- --default-names
+ensure_package imagemagick
 
 ensure_package libxslt --link
 ensure_package libxml2 --link
 ensure_package libiconv --link
 ensure_package readline --link
+ensure_package gnu-getopt --link
 
 ensure_package postgresql --service
 ensure_package memcached --service

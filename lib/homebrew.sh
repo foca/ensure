@@ -22,16 +22,23 @@ ensure_package() {
   local package=$1;
   local link;
   local service;
+  local capture;
+  local brew_args="$package";
 
   for arg in $@; do
-    [ "$arg" = "--link" ] && link=true;
-    [ "$arg" = "--service" ] && service=true;
+    if [ -n "$capture" ]; then
+      brew_args="$brew_args $arg";
+    else
+      [ "$arg" = "--" ] && capture="yes";
+      [ "$arg" = "--link" ] && link="yes";
+      [ "$arg" = "--service" ] && service="yes";
+    fi
   done
 
-  if $(brew info "$package" | grep "Not Installed"); then
+  if [ -n "$(brew info "$package" | grep "Not installed")" ]; then
     echo ">> Installing ${package}"
 
-    brew install "$package";
+    brew install $brew_args;
 
     if [ -n "$link" ]; then
       brew unlink $package >/dev/null;
