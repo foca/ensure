@@ -7,6 +7,21 @@ cd "$(dirname "$0")"
 source "lib/homebrew.sh"
 source "lib/ruby.sh"
 
+case "$1" in
+  --enable-services)
+    enable_services;
+    exit 0;
+    ;;
+
+  --disable-services)
+    disable_services;
+    exit 0;
+    ;;
+
+  *)
+    ;;
+esac
+
 ensure_brew
 
 ensure_package git

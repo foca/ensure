@@ -50,7 +50,45 @@ ensure_package() {
         "$(brew --prefix)/opt/${package}/homebrew.mxcl.${package}.plist" \
         "${HOME}/Library/LaunchAgents/";
 
-      launchctl load "${HOME}/Library/LaunchAgents/homebrew.mxcl.${package}.plist";
+      service="${HOME}/Library/LaunchAgents/homebrew.mxcl.${package}.plist";
+
+      echo "$package $service" >> .services;
+      launchctl load $service;
     fi
   fi
+}
+
+# Public: Start all services tracked by this script.
+#
+# Usage: enable_services
+#
+enable_services() {
+  while read line; do __toggle_service "load" "$line"; done < .services
+}
+
+# Public: Stop all services tracked by this script.
+#
+# Usage: disble_services
+#
+disable_services() {
+  while read line; do __toggle_service "unload" "$line"; done < .services
+}
+
+# Internal: Turn a single service on or off.
+#
+# Usage: __toggle_service [load|unload] <path_to_plist>
+#
+__toggle_service() {
+  operation="$1";
+  service=$2;
+
+  name=$(cut -d" " -f1 <<<"$line")
+  plist=$(cut -d" " -f2 <<<"$line")
+
+  [ "$operation" = "load" ] && \
+    message=">> Starting $name" || \
+    message=">> Stopping $name"
+
+  echo $message;
+  launchctl $operation "$plist";
 }
