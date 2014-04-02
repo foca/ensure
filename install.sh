@@ -6,6 +6,7 @@ cd "$(dirname "$0")"
 
 source "lib/homebrew.sh"
 source "lib/ruby.sh"
+source "lib/npm.sh"
 
 case "$1" in
   --enable-services)
@@ -50,3 +51,6 @@ ensure_package memcached --service
 ensure_package redis --service
 
 ensure_ruby "2.1.0"
+
+ensure_package node
+ensure_npm bower
