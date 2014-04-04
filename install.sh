@@ -45,6 +45,7 @@ ensure_package libxml2 --link
 ensure_package libiconv --link
 ensure_package readline --link
 ensure_package gnu-getopt --link
+ensure_package openssl --link
 
 ensure_package postgresql --service
 ensure_package memcached --service
