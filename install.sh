@@ -39,6 +39,7 @@ ensure_package ctags
 ensure_package wget -- --default-names
 ensure_package grep -- --default-names
 ensure_package imagemagick
+ensure_package arp-scan
 
 ensure_package libxslt --link
 ensure_package libxml2 --link
