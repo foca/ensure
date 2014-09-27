@@ -9,6 +9,11 @@ ensure_brew() {
   brew update >/dev/null;
 }
 
+ensure_tap() {
+  local tap=$1;
+  brew tap | grep "$tap" || brew tap "$tap";
+}
+
 # Public: Install a homebrew package if it's not installed.
 #
 # Usage: ensure_package <package> [--link] [--service]
