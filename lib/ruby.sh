@@ -16,6 +16,6 @@ ensure_ruby() {
   done
 
   if [ -z "$installed" ]; then
-    ruby-install ruby "$ruby";
+    ruby-install ruby "$target";
   fi
 }
