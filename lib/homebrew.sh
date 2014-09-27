@@ -51,13 +51,15 @@ ensure_package() {
     fi
 
     if [ -n "$service" ]; then
+      mkdir -p "${HOME}/Library/LaunchAgents/"
+
       ln -sfv \
         "$(brew --prefix)/opt/${package}/homebrew.mxcl.${package}.plist" \
         "${HOME}/Library/LaunchAgents/";
 
       service="${HOME}/Library/LaunchAgents/homebrew.mxcl.${package}.plist";
 
-      echo "$package $service" >> .services;
+      grep "$package $service" .services || echo "$package $service" >> .services;
       launchctl load $service;
     fi
   fi
