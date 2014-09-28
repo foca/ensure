@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -e
+[ -n "$DEBUG" ] && set -x
+unset CDPATH
+cd "$(dirname "$0")/.."
+
+source "lib/homebrew.sh"
+source "lib/ruby.sh"
+source "lib/npm.sh"
+
+case "${1:-install}" in
+  install)
+    MANIFEST="${MANIFEST:-"$HOME/.setup"}"
+    if [ -f "$MANIFEST" ]; then
+      source "$MANIFEST";
+    else
+      echo "Can't find setup manifest at \"${MANIFEST}\"" >&2
+    fi
+    ;;
+
+  --enable-services)
+    enable_services;
+    ;;
+
+  --disable-services)
+    disable_services;
+    ;;
+
+  *)
+    echo "Unkown command: $1" >&2
+    exit 1;
+    ;;
+esac
