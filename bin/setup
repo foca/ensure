@@ -8,6 +8,7 @@ cd "$(dirname "$0")/.."
 source "lib/homebrew.sh"
 source "lib/ruby.sh"
 source "lib/npm.sh"
+source "lib/vim.sh"
 
 case "${1:-install}" in
   install)
