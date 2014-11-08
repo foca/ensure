@@ -11,7 +11,7 @@ ensure_brew() {
 
 ensure_tap() {
   local tap=$1;
-  brew tap | grep "$tap" || brew tap "$tap";
+  (brew tap | grep "$tap" || brew tap "$tap") >/dev/null;
 }
 
 # Public: Install a homebrew package if it's not installed.
