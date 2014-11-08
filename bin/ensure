@@ -5,6 +5,9 @@ set -e
 unset CDPATH
 cd "$(dirname "$0")/.."
 
+ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
+ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
+
 source "lib/homebrew.sh"
 source "lib/ruby.sh"
 source "lib/npm.sh"
@@ -12,12 +15,17 @@ source "lib/vim.sh"
 
 case "${1:-install}" in
   install)
-    MANIFEST="${MANIFEST:-"$HOME/.setup"}"
-    if [ -f "$MANIFEST" ]; then
-      source "$MANIFEST";
+    if [ -f "$ENSURE_MANIFEST" ]; then
+      source "$ENSURE_MANIFEST";
     else
-      echo "Can't find setup manifest at \"${MANIFEST}\"" >&2
+      echo "Can't find ensure manifest at \"${ENSURE_MANIFEST}\"" >&2
     fi
+    ;;
+
+  bootstrap)
+    mkdir -p "$ENSURE_DIR"
+    touch "$ENSURE_DIR/manifest"
+    touch "$ENSURE_DIR/services"
     ;;
 
   --enable-services)

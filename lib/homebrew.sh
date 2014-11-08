@@ -14,6 +14,8 @@ ensure_tap() {
   (brew tap | grep "$tap" || brew tap "$tap") >/dev/null;
 }
 
+services_list="${ENSURE_DIR}/services"
+
 # Public: Install a homebrew package if it's not installed.
 #
 # Usage: ensure_package <package> [--link] [--service]
@@ -59,7 +61,8 @@ ensure_package() {
 
       service="${HOME}/Library/LaunchAgents/homebrew.mxcl.${package}.plist";
 
-      grep "$package $service" .services || echo "$package $service" >> .services;
+      grep "$package $service" "$services_list" ||
+        echo "$package $service" >> "$services_list"
       launchctl load $service;
     fi
   fi
@@ -70,7 +73,9 @@ ensure_package() {
 # Usage: enable_services
 #
 enable_services() {
-  while read line; do __toggle_service "load" "$line"; done < .services
+  while read name plist; do
+    __toggle_service "load" "$name" "$plist";
+  done < "$services_list"
 }
 
 # Public: Stop all services tracked by this script.
@@ -78,7 +83,9 @@ enable_services() {
 # Usage: disble_services
 #
 disable_services() {
-  while read line; do __toggle_service "unload" "$line"; done < .services
+  while read name plist; do
+    __toggle_service "unload" "$name" "$plist";
+  done < "$services_list"
 }
 
 # Internal: Turn a single service on or off.
@@ -86,11 +93,10 @@ disable_services() {
 # Usage: __toggle_service [load|unload] <path_to_plist>
 #
 __toggle_service() {
-  operation="$1";
-  service=$2;
-
-  name=$(cut -d" " -f1 <<<"$line")
-  plist=$(cut -d" " -f2 <<<"$line")
+  local operation="$1";
+  local name="$2";
+  local plist="$3"
+  local message=""
 
   [ "$operation" = "load" ] && \
     message=">> Starting $name" || \
