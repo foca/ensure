@@ -7,6 +7,7 @@ cd "$(dirname "$0")/.."
 
 ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
 ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
+ENSURE_SERVICES="${ENSURE_SERVICES:-"$ENSURE_DIR/.services"}"
 
 source "lib/homebrew.sh"
 source "lib/ruby.sh"
@@ -29,11 +30,11 @@ case "${1:-install}" in
     ;;
 
   --enable-services)
-    enable_services;
+    enable_services "$ENSURE_SERVICES";
     ;;
 
   --disable-services)
-    disable_services;
+    disable_services "$ENSURE_SERVICES";
     ;;
 
   *)

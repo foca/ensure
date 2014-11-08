@@ -14,8 +14,6 @@ ensure_tap() {
   (brew tap | grep "$tap" || brew tap "$tap") >/dev/null;
 }
 
-services_list="${ENSURE_DIR}/services"
-
 # Public: Install a homebrew package if it's not installed.
 #
 # Usage: ensure_package <package> [--link] [--service]
@@ -61,47 +59,45 @@ ensure_package() {
 
       service="${HOME}/Library/LaunchAgents/homebrew.mxcl.${package}.plist";
 
-      grep "$package $service" "$services_list" ||
-        echo "$package $service" >> "$services_list"
+      grep "$package $service" "$ENSURE_SERVICES" ||
+        echo "$package $service" >> "$ENSURE_SERVICES"
       launchctl load $service;
     fi
   fi
 }
 
-# Public: Start all services tracked by this script.
+# Internal: Start all services tracked by this script.
 #
-# Usage: enable_services
+# Usage: enable_services <services_manifest>
 #
 enable_services() {
-  while read name plist; do
-    __toggle_service "load" "$name" "$plist";
-  done < "$services_list"
+  __toggle_services "load" "$1"
 }
 
-# Public: Stop all services tracked by this script.
+# Internal: Stop all services tracked by this script.
 #
-# Usage: disble_services
+# Usage: disable_services <services_manifest>
 #
 disable_services() {
-  while read name plist; do
-    __toggle_service "unload" "$name" "$plist";
-  done < "$services_list"
+  __toggle_services "unload" "$1"
 }
 
 # Internal: Turn a single service on or off.
 #
-# Usage: __toggle_service [load|unload] <path_to_plist>
+# Usage: __toggle_services [load|unload] <services_manifest>
 #
-__toggle_service() {
+__toggle_services() {
   local operation="$1";
-  local name="$2";
-  local plist="$3"
-  local message=""
+  local manifest="$2";
 
-  [ "$operation" = "load" ] && \
-    message=">> Starting $name" || \
-    message=">> Stopping $name"
+  while read name plist; do
+    local message=""
 
-  echo $message;
-  launchctl $operation "$plist";
+    [ "$operation" = "load" ] && \
+      message=">> Starting $name" || \
+      message=">> Stopping $name"
+
+    echo $message;
+    launchctl $operation "$plist";
+  done < "$manifest"
 }
