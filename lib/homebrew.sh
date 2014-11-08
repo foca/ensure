@@ -3,8 +3,8 @@
 # Usage: ensure_brew
 #
 ensure_brew() {
-  if ! command -v brew >/dev/null; then
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  if ! $(which brew >/dev/null); then
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
   brew update >/dev/null;
 }
