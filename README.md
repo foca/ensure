@@ -80,7 +80,8 @@ It's just a bunch of shell functions. There's nothing fancy going on here.
 ## Installing
 
 ```
-curl -L https://raw.githubusercontent.com/foca/ensure/master/install.sh > /tmp/ensure.sh && sh /tmp/ensure.sh
+./configure --prefix /usr/local
+make install
 ```
 
 ## Usage

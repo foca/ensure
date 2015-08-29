@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+for arg in $@; do
+	if [ "$arg" = "--prefix" ]; then
+		shift
+		prefix="$1"
+	fi
+	shift
+done
+
+[ -n "$prefix" ] && echo "PREFIX = \"${prefix}\"" >> .config.mk

@@ -9,10 +9,12 @@ ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
 ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
 ENSURE_SERVICES="${ENSURE_SERVICES:-"$ENSURE_DIR/.services"}"
 
-source "lib/homebrew.sh"
-source "lib/ruby.sh"
-source "lib/npm.sh"
-source "lib/vim.sh"
+CURDIR="$(dirname $0)"
+
+source "${CURDIR}/../lib/ensure/homebrew.sh"
+source "${CURDIR}/../lib/ensure/ruby.sh"
+source "${CURDIR}/../lib/ensure/npm.sh"
+source "${CURDIR}/../lib/ensure/vim.sh"
 
 case "${1:-install}" in
   install)
