@@ -9,6 +9,15 @@ ensure_brew() {
   brew update >/dev/null;
 }
 
+# Public: Ensure `brew cask` is available
+#
+# Usage: ensure_cask
+#
+ensure_cask() {
+  ensure_package caskroom/cask/brew-cask
+  brew cask update
+}
+
 # Public: Ensure a certain homebrew tap is added.
 #
 # Usage: ensure_tap foca/mpp
@@ -68,6 +77,30 @@ ensure_package() {
       launchctl load $service;
     fi
   fi
+}
+
+# Public: Ensure an app is available (from those distributed by brew cask).
+#
+# Usage: ensure_app <app> [--copy]
+#
+ensure_app() {
+  local app=$1;
+  local copy;
+
+  for arg in $@; do
+    [ "$arg" = "--copy" ] && copy="yes";
+  done
+
+  # if [ -n "$(brew cask info "$app" | grep "Not installed")" ]; then
+    echo ">> Installing ${app}";
+
+    brew cask install $app;
+
+    if [ -n "$copy" ]; then
+      local prefix="/opt/homebrew-cask/Caskroom/${app}/latest"
+      cp -r "$(find "$prefix" -iname '*.app' -depth 1)" "/Applications"
+    fi
+  # fi
 }
 
 # Internal: Start all services tracked by this script.
