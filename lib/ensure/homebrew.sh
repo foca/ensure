@@ -9,6 +9,10 @@ ensure_brew() {
   brew update >/dev/null;
 }
 
+# Public: Ensure a certain homebrew tap is added.
+#
+# Usage: ensure_tap foca/mpp
+#
 ensure_tap() {
   local tap=$1;
   (brew tap | grep "$tap" || brew tap "$tap") >/dev/null;
