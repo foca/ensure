@@ -15,7 +15,7 @@ ensure_brew() {
 #
 ensure_cask() {
   ensure_package caskroom/cask/brew-cask
-  brew cask update
+  brew cask update >/dev/null;
 }
 
 # Public: Ensure a certain homebrew tap is added.
