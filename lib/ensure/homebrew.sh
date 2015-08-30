@@ -86,21 +86,25 @@ ensure_package() {
 ensure_app() {
   local app=$1;
   local copy;
+  local app_path;
 
   for arg in $@; do
     [ "$arg" = "--copy" ] && copy="yes";
   done
 
-  # if [ -n "$(brew cask info "$app" | grep "Not installed")" ]; then
+  if [ -n "$(brew cask info "$app" | grep "Not installed")" ]; then
     echo ">> Installing ${app}";
 
     brew cask install $app;
 
     if [ -n "$copy" ]; then
-      local prefix="/opt/homebrew-cask/Caskroom/${app}/latest"
-      cp -r "$(find "$prefix" -iname '*.app' -depth 1)" "/Applications"
+      local prefix="/opt/homebrew-cask/caskroom/${app}/latest"
+      local app_path="$(find "$prefix" -iname '*.app' -depth 1)"
+      local app_name="$(basename "$app_path")"
+      rm -f "$HOME/Applications/$app_name"
+      cp -r "$app_path" "$HOME/Applications/$app_name"
     fi
-  # fi
+  fi
 }
 
 # Internal: Start all services tracked by this script.
