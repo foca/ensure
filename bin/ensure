@@ -26,9 +26,9 @@ case "${1:-install}" in
     ;;
 
   bootstrap)
-    mkdir -p "$ENSURE_DIR"
-    touch "$ENSURE_DIR/manifest"
-    touch "$ENSURE_DIR/services"
+    mkdir -p "$ENSURE_DIR";
+    touch "$ENSURE_MANIFEST";
+    touch "$ENSURE_SERVICES";
     ;;
 
   --enable-services)
