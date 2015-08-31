@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+repo=$1
+path=$2
+
+[[ -z "$repo" || -z "$path" ]] && {
+  echo "Usage: ensure git <repo> <path>" >&2
+  exit 1
+}
+
+[ -d "$path/.git" ] || git clone "$repo" "$path"
