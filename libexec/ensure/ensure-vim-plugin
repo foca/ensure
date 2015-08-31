@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 plugin="$1";
-repo="${plugin##*/}"
+name="${plugin##*/}"
 
-[ -d "$HOME/.vim/bundle/$repo" ] ||
-  git clone "https://github.com/$plugin" "$HOME/.vim/bundle/$repo"
+[ -z "$plugin" ] && {
+  echo "Usage: ensure vim-plugin <user>/<repo>" >&2
+  exit 1
+}
+
+ensure vim-pathogen
+ensure git "https://github.com/$plugin" "$HOME/.vim/bundle/$name"
