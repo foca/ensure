@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+file=$1
+url=$2
+
+[[ -z "$file" || -z "$url" ]] && {
+  echo "Usage: ensure download <path> <url>" >&2
+  exit 1
+}
+
+mkdir -p "$(dirname "$file")"
+[ -f "$file" ] || curl -LSso "$file" "$url"
