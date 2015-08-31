@@ -2,45 +2,20 @@
 
 set -e
 [ -n "$DEBUG" ] && set -x
-unset CDPATH
-cd "$(dirname "$0")/.."
 
-ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
-ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
-ENSURE_SERVICES="${ENSURE_SERVICES:-"$ENSURE_DIR/.services"}"
+PATH="$PATH:$(dirname $0)/../libexec/ensure"
 
-CURDIR="$(dirname $0)"
+CMD="$1";
 
-source "${CURDIR}/../lib/ensure/homebrew.sh"
-source "${CURDIR}/../lib/ensure/ruby.sh"
-source "${CURDIR}/../lib/ensure/npm.sh"
-source "${CURDIR}/../lib/ensure/vim.sh"
+if [ -n "$CMD" ]; then
+  shift
+else
+  CMD="install"
+fi
 
-case "${1:-install}" in
-  install)
-    if [ -f "$ENSURE_MANIFEST" ]; then
-      source "$ENSURE_MANIFEST";
-    else
-      echo "Can't find ensure manifest at \"${ENSURE_MANIFEST}\"" >&2
-    fi
-    ;;
+if ! command -v "ensure-$CMD" &>/dev/null; then
+  echo "Can't find \`$CMD\`. Make sure \`ensure-$CMD\` is in your PATH." 1>&2
+  exit 1
+fi
 
-  bootstrap)
-    mkdir -p "$ENSURE_DIR";
-    touch "$ENSURE_MANIFEST";
-    touch "$ENSURE_SERVICES";
-    ;;
-
-  --enable-services)
-    enable_services "$ENSURE_SERVICES";
-    ;;
-
-  --disable-services)
-    disable_services "$ENSURE_SERVICES";
-    ;;
-
-  *)
-    echo "Unkown command: $1" >&2
-    exit 1;
-    ;;
-esac
+ensure-$CMD $@

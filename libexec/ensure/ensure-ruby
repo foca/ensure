@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+ensure package chruby
+ensure package ruby-install
+
+source "$(brew --prefix chruby)/share/chruby/chruby.sh"
+
+installed="";
+target=$1;
+
+for ruby in $RUBIES; do
+  if [[ "$ruby" == *$target* ]]; then
+    installed="yes";
+    break;
+  fi
+done
+
+if [ -z "$installed" ]; then
+  ruby-install ruby "$target";
+fi

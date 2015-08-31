@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+package="$1";
+[ -n "$package" ] || (
+  echo "Need to declare a package: ensure package <package>" 1>&2;
+  exit 1;
+)
+
+source "$(dirname $0)/../../lib/ensure/variables.sh"
+
+brew_args="$package";
+
+for arg in $@; do
+  if [ -n "$capture" ]; then
+    brew_args="$brew_args $arg";
+  else
+    [ "$arg" = "--" ] && capture="yes";
+    [ "$arg" = "--link" ] && link="yes";
+    [ "$arg" = "--service" ] && service="yes";
+  fi
+done
+
+if [ -n "$(brew info "$package" | grep "Not installed")" ]; then
+  echo ">> Installing ${package}"
+
+  brew install $brew_args;
+
+  if [ -n "$link" ]; then
+    brew unlink $package >/dev/null;
+    brew link --force $package >/dev/null;
+  fi
+
+  if [ -n "$service" ]; then
+    mkdir -p "${HOME}/Library/LaunchAgents/"
+
+    # Get the package name after the last slash, to avoid errors with services
+    # installed from tapped packages (like homebrew/head-only/disque).
+    name="${package##*/}";
+
+    ln -sfv \
+      "$(brew --prefix)/opt/${name}/homebrew.mxcl.${name}.plist" \
+      "${HOME}/Library/LaunchAgents/";
+
+    plist="${HOME}/Library/LaunchAgents/homebrew.mxcl.${name}.plist";
+
+    grep "$name $plist" "$ENSURE_SERVICES" ||
+      echo "$name $plist" >> "$ENSURE_SERVICES"
+    launchctl load $plist;
+  fi
+fi

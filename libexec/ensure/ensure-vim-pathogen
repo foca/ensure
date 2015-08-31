@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+mkdir -p "$HOME/.vim/autoload" "$HOME/.vim/bundle"
+[ -f "$HOME/.vim/autoload/pathogen.vim" ] ||
+  curl -LSso "$HOME/.vim/autoload/pathogen.vim" "https://tpo.pe/pathogen.vim"

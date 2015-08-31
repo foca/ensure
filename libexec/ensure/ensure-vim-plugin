@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+plugin="$1";
+repo="${plugin##*/}"
+
+[ -d "$HOME/.vim/bundle/$repo" ] ||
+  git clone "https://github.com/$plugin" "$HOME/.vim/bundle/$repo"

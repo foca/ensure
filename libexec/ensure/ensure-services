@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+operation="$1";
+
+source "$(dirname $0)/../../lib/ensure/variables.sh"
+
+cat "$ENSURE_SERVICES" | while read name plist; do
+  message="";
+
+  [ "$operation" = "load" ] && \
+    message=">> Starting $name" || \
+    message=">> Stopping $name"
+
+  echo $message;
+  launchctl $operation "$plist";
+done

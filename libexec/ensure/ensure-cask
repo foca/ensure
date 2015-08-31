@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+ensure package caskroom/cask/brew-cask;
+brew cask update >/dev/null;

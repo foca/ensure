@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+tap=$1;
+[ -d "$(brew --prefix)/Library/Taps/${tap}" ] || brew tap $tap &>/dev/null
