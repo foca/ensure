@@ -17,3 +17,6 @@ uninstall:
 	rm -f $(PREFIX)/bin/ensure
 	rm -rf $(PREFIX)/lib/ensure
 	rm -rf $(PREFIX)/libexec/ensure
+
+clean:
+	rm -f .config.mk
