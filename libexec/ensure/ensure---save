@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source "$(dirname $0)/../../lib/ensure/variables.sh"
+
+echo "ensure $@" >> "$ENSURE_MANIFEST"
+
+exec ensure $@
