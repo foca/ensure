@@ -6,15 +6,15 @@ ensure package ruby-install
 source "$(brew --prefix chruby)/share/chruby/chruby.sh"
 
 installed="";
-target=$1;
 
-for ruby in $RUBIES; do
-  if [[ "$ruby" == *$target* ]]; then
-    installed="yes";
-    break;
-  fi
-done
+if [ -n "$2" ]; then
+  engine="$1";
+  target="$2";
+else
+  engine="ruby"
+  target=$1;
+fi
 
-if [ -z "$installed" ]; then
-  ruby-install ruby "$target";
+if ! $(ls "$HOME/.rubies/$engine-$target" &>/dev/null); then
+  ruby-install "$engine" "$target";
 fi
