@@ -2,6 +2,7 @@
 
 source "$(dirname $0)/../../lib/ensure/variables.sh"
 
-echo "ensure $@" >> "$ENSURE_MANIFEST"
-
-exec ensure $@
+if ! $(grep -q "ensure $@" "$ENSURE_MANIFEST" &>/dev/null); then
+  echo "ensure $@" >> "$ENSURE_MANIFEST"
+  exec ensure $@
+fi
