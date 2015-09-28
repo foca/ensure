@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+ensure brew
+brew update >/dev/null;
+brew upgrade >/dev/null;

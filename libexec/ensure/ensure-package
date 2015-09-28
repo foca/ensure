@@ -8,7 +8,10 @@ package="$1";
 
 source "$(dirname $0)/../../lib/ensure/variables.sh"
 
+ensure brew
+
 brew_args="$package";
+shift
 
 for arg in $@; do
   if [ -n "$capture" ]; then
