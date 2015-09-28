@@ -8,4 +8,8 @@ path=$2
   exit 1
 }
 
-[ -d "$path/.git" ] || git clone "$repo" "$path"
+if [ -d "$path/.git" ]; then
+  GIT_DIR="$path/.git" git pull >/dev/null
+else
+  git clone "$repo" "$path"
+fi
