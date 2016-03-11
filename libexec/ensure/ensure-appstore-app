@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+app="$1";
+
+ensure package argon/mas/mas;
+
+if ! $(mas list | grep -q "$app"); then
+  mas install "$app";
+fi
