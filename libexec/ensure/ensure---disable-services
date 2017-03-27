@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-ensure services unload
+ensure brew
+brew services stop --all >/dev/null

@@ -34,20 +34,6 @@ if [ -n "$(brew info "$package" | grep "Not installed")" ]; then
   fi
 
   if [ -n "$service" ]; then
-    mkdir -p "${HOME}/Library/LaunchAgents/"
-
-    # Get the package name after the last slash, to avoid errors with services
-    # installed from tapped packages (like homebrew/head-only/disque).
-    name="${package##*/}";
-
-    ln -sfv \
-      "$(brew --prefix)/opt/${name}/homebrew.mxcl.${name}.plist" \
-      "${HOME}/Library/LaunchAgents/";
-
-    plist="${HOME}/Library/LaunchAgents/homebrew.mxcl.${name}.plist";
-
-    grep "$name $plist" "$ENSURE_SERVICES" ||
-      echo "$name $plist" >> "$ENSURE_SERVICES"
-    launchctl load $plist;
+    brew services start "$package";
   fi
 fi

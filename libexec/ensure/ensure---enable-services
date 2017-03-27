@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-ensure services load
+ensure brew
+brew services start --all >/dev/null
