@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-ensure package caskroom/cask/brew-cask;
-brew cask update >/dev/null;
+
+# Do nothing. Homebrew now implements the Cask functionality, so we don't need a
+# tap anymore.
+
+ensure-brew
