@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+set -e
+
+expected="$1"
+user="${2:-$USER}"
+
+[ -x "$expected" ] || (echo "No such shell: $expected" >&2; exit 1);
+
+[ "$SHELL" = "$expected" ] || sudo chsh -s "$expected" "$user";
