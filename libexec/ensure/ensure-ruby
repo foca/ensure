@@ -1,20 +1,15 @@
 #!/usr/bin/env bash
 
-ensure package chruby
-ensure package ruby-install
+ensure rbenv
+ensure package ruby-build
 
-source "$(brew --prefix chruby)/share/chruby/chruby.sh"
+eval "$(rbenv init -)";
 
-installed="";
+version="$1";
+shift
 
-if [ -n "$2" ]; then
-  engine="$1";
-  target="$2";
-else
-  engine="ruby"
-  target=$1;
+if $(rbenv versions | grep -q "\b${version}\b"); then
+  exit 0;
 fi
 
-if ! $(ls "$HOME/.rubies/$engine-$target" &>/dev/null); then
-  ruby-install "$engine" "$target";
-fi
+rbenv install "$version" $@

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+ensure package rbenv
+
+eval "$(rbenv init -)";
+ensure git \
+  https://github.com/rbenv/rbenv-default-gems \
+  "$(rbenv root)/plugins/rbenv-default-gems"
