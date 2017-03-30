@@ -18,4 +18,7 @@ if ! command -v "ensure-$CMD" &>/dev/null; then
   exit 1
 fi
 
+export ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
+export ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
+
 ensure-$CMD $@

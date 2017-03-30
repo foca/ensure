@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/../../lib/ensure/variables.sh"
-
 if [ -f "$ENSURE_MANIFEST" ]; then
   source "$ENSURE_MANIFEST";
 else

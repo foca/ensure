@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/../../lib/ensure/variables.sh"
-
 mkdir -p "$ENSURE_DIR";
 touch "$ENSURE_MANIFEST";
