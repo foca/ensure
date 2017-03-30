@@ -1,9 +1,20 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 [ -n "$DEBUG" ] && set -x
 
 PATH="$PATH:$(dirname $0)/../libexec/ensure"
+
+ENSURE_VERBOSE=0;
+while getopts "v" opt; do
+  case $opt in
+    v)
+      ENSURE_VERBOSE=$((ENSURE_VERBOSE+1));
+      ;;
+  esac
+done
+
+shift $((OPTIND-1));
 
 CMD="$1";
 
@@ -13,12 +24,17 @@ else
   CMD="install"
 fi
 
+export ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
+export ENSURE_LIB="$(dirname "$0")/../lib/ensure"
+export ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
+export ENSURE_VERBOSE;
+
+source "$ENSURE_LIB/helpers.sh"
+
 if ! command -v "ensure-$CMD" &>/dev/null; then
-  echo "Can't find \`$CMD\`. Make sure \`ensure-$CMD\` is in your PATH." 1>&2
-  exit 1
+  abort "Can't find \`$CMD\`. Make sure \`ensure-$CMD\` is in your PATH."
 fi
 
-export ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
-export ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
-
+log_debug "Starting $(abspath `command -v "ensure-$CMD"`) $@"
 ensure-$CMD $@
+log_debug "Finished $(abspath `command -v "ensure-$CMD"`) $@"
