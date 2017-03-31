@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 mkdir -p "$ENSURE_DIR";
 touch "$ENSURE_MANIFEST";

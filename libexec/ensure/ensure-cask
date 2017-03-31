@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Do nothing. Homebrew now implements the Cask functionality, so we don't need a
 # tap anymore.
