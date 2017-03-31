@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
+if ! $(grep -q "ensure $(echo $@)" "$ENSURE_MANIFEST"); then
+  ensure $@
+
+  log_info "Adding 'ensure $@' to $ENSURE_MANIFEST"
+  echo "ensure $@" >> "$ENSURE_MANIFEST"
+else
+  log_info "Command 'ensure $@' already in $ENSURE_MANIFEST"
+fi

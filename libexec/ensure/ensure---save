@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-if ! $(grep -q "ensure $@" "$ENSURE_MANIFEST" &>/dev/null); then
-  echo "ensure $@" >> "$ENSURE_MANIFEST"
-  exec ensure $@
-fi
