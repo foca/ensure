@@ -38,7 +38,7 @@ log_debug() {
 # Public: Log an error and exit the program.
 abort() {
   log_error "$1";
-  exit ${2:-1};
+  return ${2:-1};
 }
 
 # Public: Compute the absolute path for a script.
