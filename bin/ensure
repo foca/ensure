@@ -3,7 +3,8 @@
 set -e
 [ -n "$DEBUG" ] && set -x
 
-PATH="$PATH:$(dirname $0)/../libexec/ensure"
+ENSURE_PATH="$ENSURE_PATH:$(dirname $0)/../libexec/ensure"
+PATH="$ENSURE_PATH:$PATH"
 
 ENSURE_VERBOSE="${ENSURE_VERBOSE:-"0"}";
 while getopts "v" opt; do
@@ -27,7 +28,7 @@ fi
 export ENSURE_DIR="${ENSURE_DIR:-"$HOME/.ensure"}"
 export ENSURE_LIB="$(dirname "$0")/../lib/ensure"
 export ENSURE_MANIFEST="${ENSURE_MANIFEST:-"$ENSURE_DIR/manifest"}"
-export ENSURE_VERBOSE;
+export ENSURE_VERBOSE ENSURE_PATH;
 
 source "$ENSURE_LIB/helpers.sh"
 
