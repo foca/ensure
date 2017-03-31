@@ -5,7 +5,7 @@ set -e
 
 PATH="$PATH:$(dirname $0)/../libexec/ensure"
 
-ENSURE_VERBOSE=0;
+ENSURE_VERBOSE="${ENSURE_VERBOSE:-"0"}";
 while getopts "v" opt; do
   case $opt in
     v)
