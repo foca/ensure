@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
 tap=$1;
-[ -d "$(brew --prefix)/Library/Taps/${tap}" ] || brew tap $tap &>/dev/null
+repo="${tap%/*}/homebrew-${tap#*/}"
+
+[ -d "$(brew --prefix)/Homebrew/Library/Taps/${repo}" ] || brew tap $tap &>/dev/null
