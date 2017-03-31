@@ -9,5 +9,5 @@ name="${plugin##*/}"
 
 [ -n "$plugin" ] || abort "Usage: ensure vim-plugin <user>/<repo>"
 
-ensure vim-pathogen
+ensure download "$HOME/.vim/autoload/pathogen.vim" "https://tpo.pe/pathogen.vim"
 ensure git "https://github.com/$plugin" "$HOME/.vim/bundle/$name"

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-ensure download "$HOME/.vim/autoload/pathogen.vim" "https://tpo.pe/pathogen.vim"
