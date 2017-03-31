@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
 ensure rbenv
 ensure package ruby-build
 
@@ -8,8 +12,11 @@ eval "$(rbenv init -)";
 version="$1";
 shift
 
-if $(rbenv versions | grep -q "\b${version}\b"); then
-  exit 0;
-fi
+[ -n "$version" ] || abort "Need to declare a version: ensure ruby <version>"
 
-rbenv install "$version" $@
+log_info "Installing ruby $version"
+if ! $(rbenv versions | grep -q "\b${version}\b"); then
+  rbenv install "$version" $@ 2>&1 >$ENSURE_OUTPUT;
+else
+  log_debug "Skipping ruby $version; already installed"
+fi

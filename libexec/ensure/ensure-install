@@ -1,7 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
 
 if [ -f "$ENSURE_MANIFEST" ]; then
   source "$ENSURE_MANIFEST";
 else
-  echo "Can't find ensure manifest at \"${ENSURE_MANIFEST}\"" >&2
+  log_error "Can't find ensure manifest at \"${ENSURE_MANIFEST}\""
 fi

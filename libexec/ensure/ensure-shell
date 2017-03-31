@@ -2,9 +2,14 @@
 
 set -e
 
+source "$ENSURE_LIB/helpers.sh"
+
 expected="$1"
 user="${2:-$USER}"
 
-[ -x "$expected" ] || (echo "No such shell: $expected" >&2; exit 1);
+[ -x "$expected" ] || abort "No such shell: $expected";
 
-[ "$SHELL" = "$expected" ] || sudo chsh -s "$expected" "$user";
+[ "$SHELL" = "$expected" ] || (
+  log_info "Setting $user's shell to $expected";
+  sudo chsh -s "$expected" "$user";
+)

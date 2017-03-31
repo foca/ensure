@@ -1,12 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
 
 file=$1
 url=$2
 
-[[ -z "$file" || -z "$url" ]] && {
-  echo "Usage: ensure download <path> <url>" >&2
-  exit 1
-}
+[[ -z "$file" || -z "$url" ]] && abort "Usage: ensure download <path> <url>"
 
 mkdir -p "$(dirname "$file")"
-[ -f "$file" ] || curl -LSso "$file" "$url"
+[ -f "$file" ] || (
+  log_info "Downloading $url to $file";
+  curl -LSso "$file" "$url" 2>&1 >$ENSURE_OUTPUT;
+)

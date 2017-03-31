@@ -1,7 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
 
 ensure package node
 
+log_info "Installing npm package $1"
 if [ -n "$(npm list -g "$1" | grep "(empty)")" ]; then
   npm install -g "$1";
+else
+  log_debug "Skipping $1; already installed"
 fi

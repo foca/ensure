@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
 repo=$1
 path=$2
 
-[[ -z "$repo" || -z "$path" ]] && {
-  echo "Usage: ensure git <repo> <path>" >&2
-  exit 1
-}
+[[ -z "$repo" || -z "$path" ]] && abort "Usage: ensure git <repo> <path>"
 
 if [ -d "$path/.git" ]; then
+  log_info "Updating git repo ($repo) at $path"
   GIT_DIR="$path/.git" git pull >/dev/null
 else
+  log_info "Cloning git repo ($repo) at $path"
   git clone "$repo" "$path"
 fi

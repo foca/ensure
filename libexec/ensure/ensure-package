@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
 
 package="$1";
-[ -n "$package" ] || (
-  echo "Need to declare a package: ensure package <package>" 1>&2;
-  exit 1;
-)
+[ -n "$package" ] || abort "Need to declare a package: ensure package <package>"
 
 ensure brew
 
@@ -21,17 +22,20 @@ for arg in $@; do
   fi
 done
 
-if [ -n "$(brew info "$package" | grep "Not installed")" ]; then
-  echo ">> Installing ${package}"
+log_info "Installing homebrew package: $package"
+if ! $(brew ls --versions "$package" &>/dev/null); then
+  brew install $brew_args &>$ENSURE_OUTPUT;
+else
+  log_debug "Skipping ${package}; already installed"
+fi
 
-  brew install $brew_args;
+if [ -n "$link" ]; then
+  log_info "Linking $package"
+  brew unlink $package >/dev/null;
+  brew link --force $package &>$ENSURE_OUTPUT;
+fi
 
-  if [ -n "$link" ]; then
-    brew unlink $package >/dev/null;
-    brew link --force $package >/dev/null;
-  fi
-
-  if [ -n "$service" ]; then
-    brew services start "$package";
-  fi
+if [ -n "$service" ]; then
+  log_info "Starting service for $package"
+  brew services start "$package" &>$ENSURE_OUTPUT;
 fi

@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
-app="$1";
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
 
 ensure tap argon/mas;
 ensure package mas;
 
+app="$1";
+[ -n "$app" ] || abort "Need to declare an app name: ensure app <app>"
+
+log_info "Installing AppStore app: $app"
 if ! $(mas list | grep -q "$app"); then
   mas install "$app";
+else
+  log_debug "Skipping $app; already installed"
 fi

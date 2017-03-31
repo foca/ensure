@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
 plugin="$1";
 name="${plugin##*/}"
 
-[ -z "$plugin" ] && {
-  echo "Usage: ensure vim-plugin <user>/<repo>" >&2
-  exit 1
-}
+[ -n "$plugin" ] || abort "Usage: ensure vim-plugin <user>/<repo>"
 
 ensure vim-pathogen
 ensure git "https://github.com/$plugin" "$HOME/.vim/bundle/$name"

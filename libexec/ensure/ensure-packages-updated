@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
 ensure brew
-brew update >/dev/null;
-brew upgrade >/dev/null;
+
+log_info "Upgrading all homebrew packages"
+brew upgrade >$ENSURE_OUTPUT

@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
 tap=$1;
+[ -n "$tap" ] || abort "Need to specify a tap name: ensure tap <tap>"
+
 repo="${tap%/*}/homebrew-${tap#*/}"
 
-[ -d "$(brew --prefix)/Homebrew/Library/Taps/${repo}" ] || brew tap $tap &>/dev/null
+log_info "Tapping ${tap}"
+if ! [ -d "$(brew --prefix)/Homebrew/Library/Taps/${repo}" ]; then
+  brew tap $tap >$ENSURE_OUTPUT;
+else
+  log_debug "Skipping ${tap}; already tapped"
+fi
