@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-ensure brew
-brew services start --all >/dev/null
