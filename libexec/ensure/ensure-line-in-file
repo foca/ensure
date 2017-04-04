@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+source "$ENSURE_LIB/helpers.sh"
+
+file="$1"
+line="$2"
+
+[ -n "$file" ] || abort "File is required. Usage: ensure lineinfile <file> <line>"
+[ -n "$line" ] || abort "Line is required. Usage: ensure lineinfile <file> <line>"
+
+log_info "Ensuring '${line}' is present in $file"
+[ -f "$file" ] || touch "$file"
+grep -q "^$line$" "$file" || echo "$line" >> "$file"
