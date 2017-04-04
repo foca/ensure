@@ -11,5 +11,6 @@ line="$2"
 [ -n "$line" ] || abort "Line is required. Usage: ensure lineinfile <file> <line>"
 
 log_info "Ensuring '${line}' is present in $file"
+[ -d "$(dirname "$file")" ] || mkdir -p "$(dirname "$file")"
 [ -f "$file" ] || touch "$file"
 grep -q "^$line$" "$file" || echo "$line" >> "$file"
