@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
 source "$ENSURE_LIB/helpers.sh"
 
 file="$1"
-line="$2"
+shift
+line="$@"
 
 [ -n "$file" ] || abort "File is required. Usage: ensure lineinfile <file> <line>"
 [ -n "$line" ] || abort "Line is required. Usage: ensure lineinfile <file> <line>"
