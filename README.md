@@ -1,6 +1,6 @@
 # Ensure
 
-A simple utilty to install things on your mac.
+A simple utilty to install things on your Mac.
 
 ## Example
 
@@ -56,6 +56,14 @@ ensure vim-plugin groenewege/vim-less
 
 It's just a bunch of shell scripts. There's nothing fancy going on here.
 
+## Your first `ensure` run in a fresh machine
+
+In a brand new Mac the `/usr/local` directory is owned by `root`, and only after installing Homebrew it's `chown`ed to your user. This means that you won't be able to follow the [installation instructions](#Installing) without `sudo`. You can use the following steps to run `ensure` for the first time to let it install Homebrew for you:
+
+1. Clone `ensure` locally.
+2. `cd` to the directory where you cloned.
+3. Run `$ PATH="./bin:$PATH" ensure`.
+
 ## Installing
 
 ```
@@ -67,6 +75,11 @@ make install
 
 Define your manifest file in `~/.ensure/manifest`. Run `ensure` to ensure
 everything is installed. If something isn't, it should install it.
+
+### `ensure` options
+
+* Verbosity: `ensure -v`, `-vv` and `-vvv` will increase the verbosity level. By default `ensure` shows no output.
+* Manifest file: `ensure -f <file>`. Uses `<file>` instead of the `~/.ensure/manifest` default.
 
 ## Contributions
 
