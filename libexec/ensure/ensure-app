@@ -4,28 +4,6 @@ set -e
 
 source "$ENSURE_LIB/helpers.sh"
 
-app="$1";
-[ -n "$app" ] || abort "Need to declare an app ID: ensure appstore-app <id>"
+log_error "DEPRECATED: Use ensure package for all homebrew packages, cask or not."
 
-ensure brew
-
-for arg in $@; do
-  [ "$arg" = "--copy" ] && copy="yes";
-done
-
-log_info "Installing cask app: $app"
-if ! $(brew cask ls --versions "$app" &>/dev/null); then
-  brew cask install $app &>$ENSURE_OUTPUT;
-
-  if [ -n "$copy" ]; then
-    log_info "Copying $app to $HOME/Applications"
-
-    prefix="$(brew --prefix)/Caskroom/${app}/latest"
-    app_path="$(find "$prefix" -iname '*.app' -depth 1)"
-    app_name="$(basename "$app_path")"
-    rm -f "$HOME/Applications/$app_name"
-    cp -r "$app_path" "$HOME/Applications/$app_name"
-  fi
-else
-  log_debug "Skipping $app; already installed"
-fi
+exec ensure package $@
